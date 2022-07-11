@@ -1,4 +1,3 @@
-import {StatusBar} from 'expo-status-bar';
 import {
   Alert,
   Dimensions,
@@ -6,14 +5,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Pressable,
 } from 'react-native';
-import {DeviceMotion} from 'expo-sensors';
-import {useEffect, useState} from 'react';
-import {LineChart} from 'react-native-chart-kit';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import store from './store/store';
-import {Provider} from 'react-redux';
+// import {DeviceMotion} from 'expo-sensors';
+import React, {useEffect, useState} from 'react';
+// import {LineChart} from 'react-native-chart-kit';
+// import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import store from './store/store';
+// import {Provider} from 'react-redux';
 import axios from 'axios';
 
 export default function App() {
@@ -37,42 +37,42 @@ export default function App() {
   // 	}
   // }, [squats]);
 
-  const _slow = () => {
-    DeviceMotion.setUpdateInterval(1000);
-  };
+  // const _slow = () => {
+  //   DeviceMotion.setUpdateInterval(1000);
+  // };
 
-  const _fast = () => {
-    DeviceMotion.setUpdateInterval(16);
-  };
+  // const _fast = () => {
+  //   DeviceMotion.setUpdateInterval(16);
+  // };
 
-  const _subscribe = () => {
-    setSubscription(
-      DeviceMotion.addListener(DeviceMotionData => {
-        const data = DeviceMotionData.acceleration;
+  // const _subscribe = () => {
+  //   setSubscription(
+  //     DeviceMotion.addListener(DeviceMotionData => {
+  //       const data = DeviceMotionData.acceleration;
 
-        const acceleration =
-          data.x * data.x + data.y * data.y + data.z * data.z;
+  //       const acceleration =
+  //         data.x * data.x + data.y * data.y + data.z * data.z;
 
-        setData(Math.round(acceleration * 100) / 100);
-        setDataArray(dataArray => [
-          ...dataArray,
-          Math.round(acceleration * 100) / 100,
-        ]);
-      }),
-    );
-  };
+  //       setData(Math.round(acceleration * 100) / 100);
+  //       setDataArray(dataArray => [
+  //         ...dataArray,
+  //         Math.round(acceleration * 100) / 100,
+  //       ]);
+  //     }),
+  //   );
+  // };
 
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
+  // const _unsubscribe = () => {
+  //   subscription && subscription.remove();
+  //   setSubscription(null);
+  // };
 
-  useEffect(() => {
-    // _subscribe();
-    DeviceMotion.setUpdateInterval(50);
+  // useEffect(() => {
+  //   // _subscribe();
+  //   DeviceMotion.setUpdateInterval(50);
 
-    return () => _unsubscribe();
-  }, []);
+  //   return () => _unsubscribe();
+  // }, []);
   const addSquat = () => {
     let time = +new Date();
     setSquats(squats => [...squats, time]);
@@ -142,13 +142,13 @@ export default function App() {
     }
   };
   return (
-    <Provider store={store}>
-      <View style={styles.container}>
-        <Pressable style={styles.pressableSquat} onPress={addSquat}>
-          <Text style={styles.plus}> + </Text>
-        </Pressable>
-        <Text style={styles.squat}> squats : {squats.length}</Text>
-        {/* {squats.length > 0 && (
+    // <Provider store={store}>
+    <View style={styles.container}>
+      <Pressable style={styles.pressableSquat} onPress={addSquat}>
+        <Text style={styles.plus}> + </Text>
+      </Pressable>
+      <Text style={styles.squat}> squats : {squats.length}</Text>
+      {/* {squats.length > 0 && (
 				<LineChart
 					data={{
 						labels: nbrSquats,
@@ -183,20 +183,20 @@ export default function App() {
 					}}
 				/>
 			)} */}
-        <Pressable style={styles.pressableButton} onPress={saveSquats}>
-          <Text style={styles.squat}> save data </Text>
-        </Pressable>
-        <Pressable style={styles.pressableButton} onPress={removeSquats}>
-          <Text style={styles.squat}> remove data </Text>
-        </Pressable>
-        <Pressable style={styles.pressableButton} onPress={readSquatStored}>
-          <Text style={styles.squat}> read data </Text>
-        </Pressable>
-        {/* 
+      <Pressable style={styles.pressableButton} onPress={saveSquats}>
+        <Text style={styles.squat}> save data </Text>
+      </Pressable>
+      <Pressable style={styles.pressableButton} onPress={removeSquats}>
+        <Text style={styles.squat}> remove data </Text>
+      </Pressable>
+      <Pressable style={styles.pressableButton} onPress={readSquatStored}>
+        <Text style={styles.squat}> read data </Text>
+      </Pressable>
+      {/* 
 			<Text style={styles.text}>
 				{dataArray.length}
 			</Text> */}
-        {/* <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
 				<Pressable onPress={() => setChartVisible(!chartIsVisible)}>
 					<Text> Show graphe</Text>
 				</Pressable>
@@ -242,8 +242,8 @@ export default function App() {
 					/>
 				)}
 			</View> */}
-      </View>
-    </Provider>
+    </View>
+    // </Provider>
   );
 }
 
