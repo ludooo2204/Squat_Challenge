@@ -6,15 +6,14 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 
 const FinSession = () => {
-  const squats = useSelector(state => state.squat);
+  const squats = useSelector(state => state.squats);
   console.log('coucou');
   const saveSquats = async () => {
     console.log('save data');
     try {
       const jsonValue = JSON.stringify(squats);
       await AsyncStorage.setItem('squats', jsonValue);
-      console.log('squats');
-      console.log(squats);
+
       axios
         .post('https://lomano.fr/apiLudo/squat', {squats})
         .then(e => console.log('squat posté', e.data))
@@ -28,7 +27,7 @@ const FinSession = () => {
 
   return (
     <Pressable style={styles.pressableButton} onPress={saveSquats}>
-      <Text style={styles.squat}> save444 data </Text>
+      <Text style={styles.squat}> save data </Text>
     </Pressable>
   );
 };

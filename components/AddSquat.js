@@ -1,17 +1,21 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {addSquat} from '../redux/actionCompteur';
 
 const AddSquat = () => {
-  const dispatch = useDispatch(addSquat);
+  const dispatch = useDispatch();
   const squats = useSelector(state => state.squats);
   console.log('squats');
   console.log(squats);
+  const handleSquat = () => {
+    let time = +new Date();
+    dispatch(addSquat(time));
+  };
+
   return (
-    <Pressable
-      style={styles.pressableSquat}
-      onPress={() => dispatch(addSquat())}>
+    <Pressable style={styles.pressableSquat} onPress={handleSquat}>
       <Text style={styles.plus}> + </Text>
     </Pressable>
   );
