@@ -12,9 +12,12 @@ import React, {useEffect, useState} from 'react';
 // import {LineChart} from 'react-native-chart-kit';
 // import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import store from './store/store';
-// import {Provider} from 'react-redux';
-import axios from 'axios';
+import store from './store/store';
+import {Provider} from 'react-redux';
+import Compteur from './components/Compteur';
+import AffichageSquat from './components/AffichageSquat';
+import AddSquat from './components/AddSquat';
+import FinSession from './components/FinSession';
 
 export default function App() {
   const [squats, setSquats] = useState([]);
@@ -54,23 +57,7 @@ export default function App() {
       ],
     );
   };
-  const saveSquats = async () => {
-    console.log('save data');
-    try {
-      const jsonValue = JSON.stringify(squats);
-      await AsyncStorage.setItem('squats', jsonValue);
-      console.log('squats');
-      console.log(squats);
-      axios
-        .post('https://lomano.fr/apiLudo/squat', {squats})
-        .then(e => console.log('squat posté', e.data))
-        .catch(err => console.log('err', err));
-    } catch (e) {
-      // saving error
-      console.log('error');
-      console.log(e);
-    }
-  };
+
   const readSquatStored = async () => {
     console.log('read data stored');
 
@@ -110,29 +97,26 @@ export default function App() {
     }
   };
   return (
-    // <Provider store={store}>
-    <View style={styles.container}>
-      <Pressable style={styles.pressableSquat} onPress={addSquat}>
-        <Text style={styles.plus}> + </Text>
-      </Pressable>
-      <Text style={styles.squat}> squats : {squats.length}</Text>
-      <Pressable style={styles.pressableButton} onPress={saveSquats}>
-        <Text style={styles.squat}> save data </Text>
-      </Pressable>
-      <Pressable style={styles.pressableButton} onPress={removeSquats}>
-        <Text style={styles.squat}> remove data </Text>
-      </Pressable>
-      <Pressable style={styles.pressableButton} onPress={readSquatStored}>
-        <Text style={styles.squat}> read data </Text>
-      </Pressable>
-      <Pressable style={styles.pressableButton} onPress={readSquatOnline}>
-        <Text style={styles.squat}> read data online </Text>
-      </Pressable>
-      {squatsOnline && squatsOnline.length && (
-        <Text>{squatsOnline.length} squats total !!</Text>
-      )}
-    </View>
-    // </Provider>
+    <Provider store={store}>
+      <View style={styles.container}>
+        <AddSquat />
+        <AffichageSquat />
+        <FinSession />
+        <Pressable style={styles.pressableButton} onPress={removeSquats}>
+          <Text style={styles.squat}> remove data </Text>
+        </Pressable>
+        <Pressable style={styles.pressableButton} onPress={readSquatStored}>
+          <Text style={styles.squat}> read data </Text>
+        </Pressable>
+        <Pressable style={styles.pressableButton} onPress={readSquatOnline}>
+          <Text style={styles.squat}> read data online </Text>
+        </Pressable>
+        {squatsOnline && squatsOnline.length && (
+          <Text>{squatsOnline.length} squats total !!</Text>
+        )}
+        {/* <Compteur /> */}
+      </View>
+    </Provider>
   );
 }
 
@@ -143,9 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  plus: {
-    fontSize: 150,
-  },
+
   squat: {
     fontSize: 20,
   },
