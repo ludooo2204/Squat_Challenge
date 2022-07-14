@@ -1,25 +1,64 @@
+import axios from 'axios';
 import React, {useEffect} from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import {
-  readSquatOnline,
-  readSquatStored,
-  removeSquats,
-} from '../helpers/functions';
+import {readSquatStored, removeSquats, storeData} from '../helpers/functions';
+import {addSquats, isConnected} from '../redux/actionCompteur';
+import {useSelector, useDispatch} from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 
 const Navbar = () => {
-  const handleOnline = async () => {
-    const {data} = await readSquatOnline();
-    console.log(data);
+  const dispatch = useDispatch();
+  const isWebConnected = useSelector(state => state.isConnected);
+  const squats = useSelector(state => state.squats);
+
+  useEffect(() => {
+    NetInfo.fetch().then(state => {
+      dispatch(isConnected(state.isConnected));
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log('isWebConnected');
+    console.log(isWebConnected);
+    // isWebConnected != null && isWebConnected
+    //   ? handleSquatsOnline()
+    //   : handleSquatsStored();
+    if (isWebConnected) {
+      handleSquatsOnline();
+    } else {
+      console.log('isWebConnected');
+      console.log('isWebConnected');
+      console.log('isWebConnected');
+      console.log('isWebConnected');
+      console.log(isWebConnected);
+      handleSquatsStored();
+    }
+  }, [isWebConnected]);
+
+  const handleSquatsOnline = async () => {
+    console.log('read squats online');
+    const {data} = await axios.get('https://lomano.fr/apiLudo/squat');
+    dispatch(addSquats(data));
+  };
+  const handleSquatsStored = async () => {
+    console.log('read squats stored');
+    const data = await readSquatStored();
+    dispatch(addSquats(JSON.parse(data)));
   };
   return (
     <>
+      <Pressable
+        style={styles.pressableButton}
+        onPress={() => storeData(squats)}>
+        <Text style={styles.squat}> store data </Text>
+      </Pressable>
       <Pressable style={styles.pressableButton} onPress={removeSquats}>
         <Text style={styles.squat}> remove data </Text>
       </Pressable>
-      <Pressable style={styles.pressableButton} onPress={readSquatStored}>
+      <Pressable style={styles.pressableButton} onPress={handleSquatsStored}>
         <Text style={styles.squat}> read data </Text>
       </Pressable>
-      <Pressable style={styles.pressableButton} onPress={handleOnline}>
+      <Pressable style={styles.pressableButton} onPress={handleSquatsOnline}>
         <Text style={styles.squat}> read data online </Text>
       </Pressable>
     </>

@@ -1,11 +1,19 @@
 /* eslint-disable prettier/prettier */
-import {ADD_COUNT, RESET_COUNT, ADD_TODO, ADD_SQUAT} from './type';
+import {
+  ADD_COUNT,
+  RESET_COUNT,
+  ADD_TODO,
+  ADD_SQUAT,
+  ADD_SQUATS,
+  IS_CONNECTED,
+} from './type';
 
 //format initial du state global
 const initialState = {
   todos: [],
   count: 0,
   squats: [],
+  isConnected: null,
 };
 
 // le reducer permet de manipuler les actions de la vue (composant React)
@@ -32,6 +40,16 @@ export const reducerCount = (state = initialState, action) => {
       return {
         ...state,
         squats: [...state.squats, action.payload], //new todos array
+      };
+    case ADD_SQUATS:
+      return {
+        ...state,
+        squats: action.payload, //new todos array
+      };
+    case IS_CONNECTED:
+      return {
+        ...state,
+        isConnected: action.payload, //new todos array
       };
 
     default:

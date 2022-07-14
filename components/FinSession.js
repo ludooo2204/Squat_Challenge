@@ -7,7 +7,6 @@ import {useSelector} from 'react-redux';
 
 const FinSession = () => {
   const squats = useSelector(state => state.squats);
-  console.log('coucou');
   const saveSquats = async () => {
     console.log('save data');
     try {

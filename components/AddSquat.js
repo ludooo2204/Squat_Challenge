@@ -6,9 +6,6 @@ import {addSquat} from '../redux/actionCompteur';
 
 const AddSquat = () => {
   const dispatch = useDispatch();
-  const squats = useSelector(state => state.squats);
-  console.log('squats');
-  console.log(squats);
   const handleSquat = () => {
     let time = +new Date();
     dispatch(addSquat(time));

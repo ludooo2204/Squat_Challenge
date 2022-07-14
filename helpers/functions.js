@@ -4,15 +4,15 @@ import {Alert} from 'react-native';
 
 /* eslint-disable prettier/prettier */
 export const readSquatStored = async () => {
-  console.log('read data stored');
-
   try {
     const value = await AsyncStorage.getItem('squats');
     if (value !== null) {
       // value previously stored
       console.log('value read from async storage');
-      console.log(value);
+      // console.log(value);
       return value;
+    } else {
+      console.log('no values on storage !!');
     }
   } catch (e) {
     // error reading value
@@ -20,14 +20,21 @@ export const readSquatStored = async () => {
     console.log(e);
   }
 };
-export const readSquatOnline = async () => {
-  console.log('read data online');
-  const data = await axios
-    .get('https://lomano.fr/apiLudo/squat')
+export const storeData = async data => {
+  console.log('read data stored');
 
-    .catch(err => console.log('err', err));
-  return data;
+  try {
+    const jsonValue = JSON.stringify(data);
+    await AsyncStorage.setItem('squats', jsonValue);
+    console.log('data stored!');
+    console.log(data);
+  } catch (e) {
+    // error reading value
+    console.log('error');
+    console.log(e);
+  }
 };
+
 export const removeSquats = () => {
   Alert.alert(
     'Confirmation',
