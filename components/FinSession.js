@@ -12,7 +12,11 @@ const FinSession = () => {
     try {
       const jsonValue = JSON.stringify(squats);
       await AsyncStorage.setItem('squats', jsonValue);
-
+      console.log('save');
+      console.log('save');
+      console.log('save');
+      console.log('save');
+      console.log('save');
       axios
         .post('https://lomano.fr/apiLudo/squat', {squats})
         .then(e => console.log('squat posté', e.data))

@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const AffichageSquat = () => {
   const squats = useSelector(state => state.squats);
   console.log('squats from Aff');
   console.log(squats);
-
+  Alert.alert('probleme export online revoir backend');
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
