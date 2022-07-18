@@ -59,12 +59,13 @@ const FinSession = () => {
 export default FinSession;
 const styles = StyleSheet.create({
   pressableButton: {
-    padding: 10,
+    padding: 20,
     margin: 10,
     backgroundColor: 'lightgrey',
-    borderRadius: 30,
+    borderRadius: 20,
   },
   squat: {
-    fontSize: 20,
+    fontSize: 30,
+    fontWeight: '900',
   },
 });
