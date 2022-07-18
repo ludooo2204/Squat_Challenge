@@ -2,13 +2,17 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {addSquat} from '../redux/actionCompteur';
+import {addSquatSession} from '../redux/actionCompteur';
 
 const AddSquat = () => {
   const dispatch = useDispatch();
   const handleSquat = () => {
     let time = +new Date();
-    dispatch(addSquat(time));
+    console.log('time');
+    console.log(time);
+    console.log('typeof time');
+    console.log(typeof time);
+    dispatch(addSquatSession(time));
   };
 
   return (

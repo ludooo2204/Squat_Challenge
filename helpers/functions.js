@@ -8,7 +8,10 @@ export const readSquatStored = async () => {
     const value = await AsyncStorage.getItem('squats');
     if (value !== null) {
       // value previously stored
-      console.log('value read from async storage');
+      // console.log('value read from async storage');
+      // console.log('value read from async storage');
+      // console.log('value read from async storage');
+      // console.log('value read from async storage');
       // console.log(value);
       return value;
     } else {
@@ -36,6 +39,7 @@ export const storeData = async data => {
 };
 
 export const removeSquats = () => {
+  console.log('remobe???');
   Alert.alert(
     'Confirmation',
     'Etes-vous sur de vouloir supprimer toutes vos données ??',

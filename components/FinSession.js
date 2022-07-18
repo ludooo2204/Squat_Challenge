@@ -3,34 +3,56 @@ import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  addSquatsTotal,
+  atsTotal,
+  resetSquatsSession,
+} from '../redux/actionCompteur';
+import {readSquatStored} from '../helpers/functions';
 
 const FinSession = () => {
-  const squats = useSelector(state => state.squats);
+  const squatsSession = useSelector(state => state.squatsSession);
+  const dispatch = useDispatch();
   const saveSquats = async () => {
-    console.log('save data');
-    try {
-      const jsonValue = JSON.stringify(squats);
-      await AsyncStorage.setItem('squats', jsonValue);
-      console.log('save');
-      console.log('save');
-      console.log('save');
-      console.log('save');
-      console.log('save');
-      axios
-        .post('https://lomano.fr/apiLudo/squat', {squats})
-        .then(e => console.log('squat posté', e.data))
-        .catch(err => console.log('err', err));
-    } catch (e) {
-      // saving error
-      console.log('error');
-      console.log(e);
+    if (squatsSession.length > 0) {
+      console.log('save data');
+      try {
+        let dataStored = await readSquatStored();
+        if (dataStored) {
+          dataStored = JSON.parse(dataStored);
+          dataStored = [...dataStored, ...squatsSession];
+          const jsonValue = JSON.stringify(dataStored);
+          await AsyncStorage.setItem('squats', jsonValue);
+        } else {
+          await AsyncStorage.setItem('squats', JSON.stringify(squatsSession));
+        }
+
+        axios
+          .post('https://lomano.fr/apiLudo/squat', {data: squatsSession})
+          .then(e => {
+            console.log('squat posté');
+            dispatch(resetSquatsSession());
+            if (dataStored) {
+              dispatch(addSquatsTotal(dataStored));
+            } else {
+              dispatch(addSquatsTotal(squatsSession));
+            }
+          })
+          .catch(err => console.log('err', err));
+      } catch (e) {
+        // saving error
+        console.log('error');
+        console.log(e);
+      }
+    } else {
+      console.log('pas de squat dans la session!');
     }
   };
 
   return (
     <Pressable style={styles.pressableButton} onPress={saveSquats}>
-      <Text style={styles.squat}> save data </Text>
+      <Text style={styles.squat}> Fin de session </Text>
     </Pressable>
   );
 };

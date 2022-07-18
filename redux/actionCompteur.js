@@ -1,40 +1,27 @@
 //ce fichier action permet de simplifier l'appel a la fonction addCount dans la vue
 
 import {
-  ADD_COUNT,
-  RESET_COUNT,
-  ADD_TODO,
-  ADD_SQUAT,
-  ADD_SQUATS,
+  ADD_SQUAT_SESSION,
+  ADD_SQUATS_TOTAL,
+  RESET_SQUATS_SESSION,
   IS_CONNECTED,
 } from './type';
 
-export const addCount = () => {
+export const addSquatSession = payload => {
   return {
-    type: ADD_COUNT,
-  };
-};
-export const resetCount = () => {
-  return {
-    type: RESET_COUNT,
-  };
-};
-export const addTodo = payload => {
-  return {
-    type: ADD_TODO,
+    type: ADD_SQUAT_SESSION,
     payload,
   };
 };
-export const addSquat = payload => {
+export const addSquatsTotal = payload => {
   return {
-    type: ADD_SQUAT,
+    type: ADD_SQUATS_TOTAL,
     payload,
   };
 };
-export const addSquats = payload => {
+export const resetSquatsSession = () => {
   return {
-    type: ADD_SQUATS,
-    payload,
+    type: RESET_SQUATS_SESSION,
   };
 };
 export const isConnected = payload => {

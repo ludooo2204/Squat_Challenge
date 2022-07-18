@@ -1,18 +1,15 @@
 /* eslint-disable prettier/prettier */
 import {
-  ADD_COUNT,
-  RESET_COUNT,
-  ADD_TODO,
-  ADD_SQUAT,
-  ADD_SQUATS,
+  ADD_SQUAT_SESSION,
+  ADD_SQUATS_TOTAL,
+  RESET_SQUATS_SESSION,
   IS_CONNECTED,
 } from './type';
 
 //format initial du state global
 const initialState = {
-  todos: [],
-  count: 0,
-  squats: [],
+  squatsTotal: [],
+  squatsSession: [],
   isConnected: null,
 };
 
@@ -20,31 +17,20 @@ const initialState = {
 // on ne manipule jamais le state directement mais une copie (comme usestate)
 export const reducerCount = (state = initialState, action) => {
   switch (action.type) {
-    case RESET_COUNT:
+    case ADD_SQUAT_SESSION:
       return {
         ...state,
-        count: 0,
+        squatsSession: [...state.squatsSession, action.payload], //new todos array
       };
-    case ADD_COUNT:
+    case ADD_SQUATS_TOTAL:
       return {
         ...state,
-        count: state.count + 1,
+        squatsTotal: action.payload, //new todos array
       };
-    case ADD_TODO:
+    case RESET_SQUATS_SESSION:
       return {
         ...state,
-        todos: [...state.todos, action.payload], //new todos array
-        // todos: state.todos.push(action.payload),
-      };
-    case ADD_SQUAT:
-      return {
-        ...state,
-        squats: [...state.squats, action.payload], //new todos array
-      };
-    case ADD_SQUATS:
-      return {
-        ...state,
-        squats: action.payload, //new todos array
+        squatsSession: [], //new todos array
       };
     case IS_CONNECTED:
       return {

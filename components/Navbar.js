@@ -2,14 +2,18 @@ import axios from 'axios';
 import React, {useEffect} from 'react';
 import {Alert, Pressable, StyleSheet, Text} from 'react-native';
 import {readSquatStored, removeSquats, storeData} from '../helpers/functions';
-import {addSquats, isConnected} from '../redux/actionCompteur';
+import {
+  addSquatsTotal,
+  addSquatSession,
+  isConnected,
+} from '../redux/actionCompteur';
 import {useSelector, useDispatch} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const isWebConnected = useSelector(state => state.isConnected);
-  const squats = useSelector(state => state.squats);
+  const squats = useSelector(state => state.addSquatSession);
 
   useEffect(() => {
     NetInfo.fetch().then(state => {
@@ -20,15 +24,8 @@ const Navbar = () => {
   useEffect(() => {
     console.log('isWebConnected ???');
     console.log(isWebConnected);
-    // isWebConnected != null && isWebConnected
-    //   ? handleSquatsOnline()
-    //   : handleSquatsStored();
+
     if (isWebConnected == false) {
-      // console.log('isWebConnected');
-      // console.log('isWebConnected');
-      // console.log('isWebConnected');
-      // console.log('isWebConnected');
-      // console.log(isWebConnected);
       handleSquatsStored();
     } else {
       handleSquatsOnline();
@@ -37,84 +34,151 @@ const Navbar = () => {
 
   const importData = async _data => {
     storeData(_data);
-    const dataStored = JSON.parse(await readSquatStored());
+    let dataStored = await readSquatStored();
+    // console.log('dataStored');
+    // console.log(dataStored);
+    if (dataStored) {
+      dataStored = JSON.parse(dataStored);
+    }
     const {data} = await axios.get('https://lomano.fr/apiLudo/squat');
-
+    // console.log('dataStored');
+    // console.log(dataStored);
+    // console.log(' data online');
+    // console.log(data);
     Alert.alert(
       'Confirmation',
-      'Vos données online ont été importés avec succès !\n\n locales => ' +
-        dataStored.length +
-        ' squats \n onlines => ' +
-        data.length +
-        ' squats ',
+      'Vos données online ont été importés avec succès !',
     );
   };
   const exportData = async _data => {
-    const dataStored = JSON.parse(await readSquatStored());
-
+    let dataStored = await readSquatStored();
+    console.log('dataStored');
     console.log(dataStored);
+    if (dataStored) {
+      dataStored = JSON.parse(dataStored);
+    }
+
     axios
-      .post('https://lomano.fr/apiLudo/squat', {dataStored})
-      .then(e => console.log('squat posté', e.data))
+      .post('https://lomano.fr/apiLudo/squat', {data: dataStored})
+
+      .then(e => {
+        Alert.alert(
+          'Confirmation',
+          'Vos données locales ont été exportés avec succès !',
+        );
+        console.log('squat posté');
+      })
       .catch(err => console.log('err', err));
-
-    const {data} = await axios.get('https://lomano.fr/apiLudo/squat');
-
-    Alert.alert(
-      'Confirmation',
-      'Vos données locales ont été exportés avec succès !\n\n locales => ' +
-        dataStored.length +
-        ' squats \n onlines => ' +
-        data.length +
-        ' squats ',
-    );
   };
+
   const handleSquatsOnline = async () => {
     console.log('read squats online');
-    const {data} = await axios.get('https://lomano.fr/apiLudo/squat');
-    dispatch(addSquats(data));
 
-    const dataStored = JSON.parse(await readSquatStored());
-    console.log('synchrone??');
-    console.log('pk 2 fois???????????????');
-    const isSynchronized = JSON.stringify(data) == JSON.stringify(dataStored);
-    console.log('data.length');
-    console.log(data.length);
-    console.log('dataStored.length');
-    console.log(dataStored.length);
+    const {data} = await axios.get('https://lomano.fr/apiLudo/squat');
+    dispatch(addSquatsTotal(data));
+    // console.log('data');
+    // console.log('data');
+    // console.log('data');
+    // console.log('data');
+    // console.log('data');
+    // console.log(data);
+    let dataStored = await readSquatStored();
+
+    if (dataStored) {
+      dataStored = JSON.parse(dataStored);
+    }
+    let isSynchronized;
+    if (data.length == 0 && dataStored == undefined) {
+      isSynchronized = true;
+    } else {
+      isSynchronized = JSON.stringify(data) == JSON.stringify(dataStored);
+    }
+    console.log('isSynchronized');
     console.log(isSynchronized);
+    console.log('data online');
+    console.log(data);
+    console.log('dataStored locale');
+    console.log(dataStored);
+
     if (!isSynchronized) {
-      Alert.alert(
-        'Alerte',
-        'Vos données en ligne ne sont pas les memes que les locales \nLesquelles voulez-vous garder?\n\n locales => ' +
-          dataStored.length +
-          ' squats \n onlines => ' +
-          data.length +
-          ' squats ',
-        [
-          {
-            text: 'Importer les données online',
-            onPress: () => importData(data),
-            style: 'cancel',
-          },
-          {
-            text: 'Exporter les données locales',
-            onPress: () => exportData(dataStored),
-          },
-        ],
-      );
+      if (dataStored == undefined && data.length > 0) {
+        Alert.alert(
+          'Alerte',
+          'Pas de données locales, \n voulez-vous importer vos données online? ',
+          [
+            {
+              text: 'annuler',
+              style: 'cancel',
+            },
+            {
+              text: 'Importer les données online',
+              onPress: () => importData(data),
+              // onPress: () => exportData(dataStored),
+            },
+          ],
+        );
+      } else if (data.length == 0 && dataStored != undefined) {
+        Alert.alert(
+          'Alerte',
+          'Pas de données online, \n voulez-vous exporter vos données locales ? ',
+          [
+            {
+              text: 'annuler',
+              style: 'cancel',
+            },
+            {
+              text: 'Exporter les données locales',
+              onPress: () => exportData(dataStored),
+              // onPress: () => exportData(dataStored),
+            },
+          ],
+        );
+      } else {
+        console.log('dataStored');
+        console.log('dataStored');
+        console.log('dataStored');
+        console.log(dataStored);
+        console.log('data');
+        console.log('data');
+        console.log('data');
+        console.log(data);
+        Alert.alert(
+          'Alerte',
+
+          'Vos données locales et online ne sont pas les mêmes \n' +
+            dataStored.length +
+            ' squats locales \n' +
+            data.length +
+            ' squats onlines \n  voulez-vous importer vos données online ou exporter vos données locales? ',
+          [
+            {
+              text: 'annuler',
+              style: 'cancel',
+            },
+            {
+              text: 'exporter les données locales',
+              onPress: () => exportData(dataStored),
+            },
+            {
+              text: 'Importer les données online',
+              onPress: () => importData(data),
+              // onPress: () => exportData(dataStored),
+            },
+          ],
+        );
+      }
     }
   };
   const handleSquatsStored = async () => {
     console.log('read squats stored');
     const data = await readSquatStored();
-    dispatch(addSquats(JSON.parse(data)));
+    dispatch(addSquatsTotal(JSON.parse(data)));
   };
   return (
     <>
       <Pressable
         style={styles.pressableButton}
-        onPress={() => storeData(squats)}>
+        onPress={() => storeData(addSquatSession)}>
         <Text style={styles.squat}> store data </Text>
       </Pressable>
       <Pressable style={styles.pressableButton} onPress={removeSquats}>

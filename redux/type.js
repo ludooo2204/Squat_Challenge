@@ -1,6 +1,4 @@
-export const ADD_COUNT = 'ADD_COUNT ';
-export const RESET_COUNT = 'RESET_COUNT ';
-export const ADD_TODO = 'ADD_TODO ';
-export const ADD_SQUAT = 'ADD_SQUAT ';
-export const ADD_SQUATS = 'ADD_SQUATS ';
+export const ADD_SQUATS_TOTAL = 'ADD_SQUATS_TOTAL ';
+export const ADD_SQUAT_SESSION = 'ADD_SQUAT_SESSION ';
+export const RESET_SQUATS_SESSION = 'RESET_SQUATS_SESSION ';
 export const IS_CONNECTED = 'IS_CONNECTED ';
