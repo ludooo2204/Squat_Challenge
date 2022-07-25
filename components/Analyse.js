@@ -14,8 +14,8 @@ import analyseData from '../helpers/analyseData';
 const Analyse = () => {
   const squatsTotal = useSelector(state => state.squatsTotal);
   const squatsSession = useSelector(state => state.squatsSession);
-  console.log('squatsTotal');
-  console.log(squatsTotal);
+  // console.log('squatsTotal');
+  // console.log(squatsTotal);
   analyseData(squatsTotal);
   // console.log('squatsSession');
   // console.log(squatsSession);
@@ -32,7 +32,7 @@ const Analyse = () => {
   });
   // console.log('dataTotalForGraphe');
   // console.log(dataTotalForGraphe);
-  console.log(dataTotalForGrapheCumul);
+  // console.log(dataTotalForGrapheCumul);
 
   return (
     <View style={{flex: 1}}>
