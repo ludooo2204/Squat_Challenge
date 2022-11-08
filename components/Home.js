@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import AffichageSquat from './AffichageSquat';
 import AddSquat from './AddSquat';
@@ -27,18 +27,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  squat: {
-    fontSize: 20,
-  },
-  pressableSquat: {
-    padding: 100,
-    backgroundColor: 'lightgrey',
-    borderRadius: 30,
-  },
-  pressableButton: {
-    padding: 10,
-    margin: 10,
-    backgroundColor: 'lightgrey',
-    borderRadius: 30,
-  },
 });

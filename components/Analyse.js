@@ -8,20 +8,16 @@ import {
 } from 'react-native';
 
 import React from 'react';
-import {BarChart, LineChart} from 'react-native-charts-wrapper';
-import {useSelector} from 'react-redux';
+import { BarChart, LineChart } from 'react-native-charts-wrapper';
+import { useSelector } from 'react-redux';
 import analyseData from '../helpers/analyseData';
 const Analyse = () => {
   const squatsTotal = useSelector(state => state.squatsTotal);
   const squatsSession = useSelector(state => state.squatsSession);
-  // console.log('squatsTotal');
-  // console.log(squatsTotal);
   analyseData(squatsTotal);
-  // console.log('squatsSession');
-  // console.log(squatsSession);
   const dataTotalForGraphe = [];
   squatsTotal.forEach(element => {
-    dataTotalForGraphe.push({x: element - squatsTotal[0], y: 1});
+    dataTotalForGraphe.push({ x: element - squatsTotal[0], y: 1 });
   });
   const dataTotalForGrapheCumul = [];
   squatsTotal.forEach(element => {
@@ -35,7 +31,7 @@ const Analyse = () => {
   // console.log(dataTotalForGrapheCumul);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
         {squatsTotal.length == 0 && <Text>PAS DE DONNEES!!</Text>}
         {squatsTotal.length > 0 && (
@@ -62,7 +58,7 @@ const Analyse = () => {
                   values: dataTotalForGraphe,
                 },
               ],
-              config: {barWidth: 1000},
+              config: { barWidth: 1000 },
             }}
           />
         )}
@@ -73,8 +69,8 @@ const Analyse = () => {
             legend={{
               enabled: false,
             }}
-            chartDescription={{text: ''}}
-            yAxis={{axisMaximum: squatsTotal.length}}
+            chartDescription={{ text: '' }}
+            yAxis={{ axisMaximum: squatsTotal.length }}
             xAxis={{
               drawLabels: true,
               position: 'BOTTOM',
@@ -93,7 +89,7 @@ const Analyse = () => {
                 {
                   label: 'demo',
                   values: dataTotalForGrapheCumul,
-                  config: {drawValues: false},
+                  config: { drawValues: false },
                 },
               ],
             }}

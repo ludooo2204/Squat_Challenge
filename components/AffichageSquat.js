@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, {useEffect} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {addSquatsTotal} from '../redux/actionCompteur';
+import React, { useEffect } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { addSquatsTotal } from '../redux/actionCompteur';
 
 const AffichageSquat = () => {
   const dispatch = useDispatch();
@@ -15,16 +15,7 @@ const AffichageSquat = () => {
       .get('https://lomano.fr/apiLudo/squat')
       .then(data => dispatch(addSquatsTotal(data.data)));
   }, []);
-  // console.log('store');
-  // // console.log(store);
-  // // console.log(squatsTotal.length);
-  // console.log('squatsTotal from Aff');
-  // console.log(squatsTotal);
-  // console.log(squatsTotal.length);
-  // console.log('squatSession from Aff');
-  // console.log(squatsSession);
-  // console.log(squatsSession.length);
-  // Alert.alert('probleme export online revoir backend');
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
